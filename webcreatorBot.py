@@ -21,13 +21,17 @@ def generate_answer(question, prompt):
     rezult = response.choices[0].message.content
     return(rezult)
 
+st.set_page_config(
+    page_title="WebCreatorBot",
+    page_icon="👋",
+)
 df_prompt_rus = pd.read_csv('data/df_prompt_rus2.csv')
 with st.sidebar:
     st.title('Бот - ВебКреатор')
     st.image('data/bot.png')
     st.divider()
     st.subheader('Описание')
-    st.markdown("Бот предназначен для генерации сгениерированного html, css, javascript кода на существующую веб-страницу")
+    st.markdown("Бот предназначен для генерации html, css, javascript кода на существующую веб-страницу")
     #role = st.selectbox(label = 'Выберите роль', options=df_prompt_rus.act_rus.to_list())
     base_prompt = 'I want you to act as a junior developer of individual interface blocks. I will describe the details of the block that you will code using the following programming languages: html, css, javascript. Do not separate html, css, js, combine all elements into one <div> block in order to insert the resulting code into an existing HTML document. Do not write explanations.'
     
