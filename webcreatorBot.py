@@ -25,14 +25,19 @@ df_prompt_rus = pd.read_csv('data/df_prompt_rus2.csv')
 with st.sidebar:
     st.title('Бот - ВебКреатор')
     st.image('data/bot.png')
-    role = st.selectbox(label = 'Выберите роль', options=df_prompt_rus.act_rus.to_list())
-    base_prompt = df_prompt_rus[df_prompt_rus.act_rus == role]['prompt'].to_list()[0]
-    st.text_area(label = 'Промпт ответа', value=base_prompt)
+    st.divider()
+    st.subheader('Описание')
+    st.markdown("Бот предназначен для генерации сгениерированного html, css, javascript кода на существующую веб-страницу")
+    #role = st.selectbox(label = 'Выберите роль', options=df_prompt_rus.act_rus.to_list())
+    base_prompt = 'I want you to act as a junior developer of individual interface blocks. I will describe the details of the block that you will code using the following programming languages: html, css, javascript. Do not separate html, css, js, combine all elements into one <div> block in order to insert the resulting code into an existing HTML document. Do not write explanations.'
+    
+    
+    #df_prompt_rus[df_prompt_rus.act_rus == role]['prompt'].to_list()[0]
+    #st.text_area(label = 'Промпт ответа', value=base_prompt)
 
-question = st.text_area(label = 'Введите запрос', height = 300)
+question = st.text_area(label = 'Максимально опишите блок для вставки на веб страницу', height = 300)
 if st.button(label = 'Сгенерировать код'):
     rezult = generate_answer(question, base_prompt)
     if rezult:
         st.write(rezult)
-        if role == 'Младший веб-разработчик':
-            components.html(rezult, width = 600, height = 600, scrolling=True)
+        components.html(rezult, width = 600, height = 600, scrolling=True)
