@@ -2,6 +2,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 from openai import OpenAI
 import pandas as pd
+from duckduckgo_search import DDGS
 
 AI_Client = OpenAI(
     api_key=st.secrets['OPENAI_KEY'], 
@@ -21,11 +22,16 @@ def generate_answer(question, prompt):
     rezult = response.choices[0].message.content
     return(rezult)
 
+#generate answer with duck-duckgo search
+def generate_answer_DDGS(question, prompt):
+    results = DDGS().chat(f"Ты - {prompt} . Выполни запрос {question}", model='gpt-4o-mini')
+    return(results)
+
 st.set_page_config(
     page_title="WebCreatorBot",
     page_icon="👋",
 )
-df_prompt_rus = pd.read_csv('data/df_prompt_rus2.csv')
+#df_prompt_rus = pd.read_csv('data/df_prompt_rus2.csv')
 with st.sidebar:
     st.title('Бот - ВебКреатор')
     st.image('data/bot.png')
@@ -41,7 +47,12 @@ with st.sidebar:
 
 question = st.text_area(label = 'Максимально опишите блок для вставки на веб страницу', height = 300)
 if st.button(label = 'Сгенерировать код'):
-    rezult = generate_answer(question, base_prompt)
+    try:
+        st.write('Duck Duck GO Rezults')
+        rezult = generate_answer_DDGS(question, base_prompt)
+    except:
+        st.write('OPEN AI Rezults')
+        rezult = generate_answer(question, base_prompt)
     if rezult:
         st.write(rezult)
         components.html(rezult, width = 600, height = 600, scrolling=True)
